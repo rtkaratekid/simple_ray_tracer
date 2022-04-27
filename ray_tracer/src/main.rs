@@ -1,3 +1,5 @@
+
+use vec3::vec3;
 fn main() {
 
     // Image
@@ -8,6 +10,7 @@ fn main() {
     println!("P3\n{} {}\n255", width, height);
     
     for j in (0..height).rev() {
+        eprintln!("Scanlines remaining {}", j);
         for i in 0..width {
             let r = i as f64 / (width - 1) as f64;
             let g = j as f64 / (height - 1) as f64;
@@ -20,4 +23,6 @@ fn main() {
             println!("{} {} {}", ir, ig, ib);
         }
     }
+
+    eprintln!("Done");
 }
