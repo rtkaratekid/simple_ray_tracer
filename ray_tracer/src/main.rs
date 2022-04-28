@@ -1,15 +1,13 @@
-
-use ray_tracer::vec3; 
+use ray_tracer::vec3::Vec3;
 
 fn main() {
-
     // Image
     let width = 256;
     let height = 256;
 
     // Render
     println!("P3\n{} {}\n255", width, height);
-    
+
     for j in (0..height).rev() {
         eprintln!("Scanlines remaining {}", j);
         for i in 0..width {
