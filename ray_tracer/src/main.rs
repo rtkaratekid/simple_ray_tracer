@@ -1,5 +1,6 @@
 
-use vec3::vec3;
+use ray_tracer::vec3; 
+
 fn main() {
 
     // Image
