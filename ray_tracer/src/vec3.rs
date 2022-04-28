@@ -1,20 +1,20 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub};
-use std::process::Output;
+// use std::process::Output;
 
 // Type aliases for Vec3
-type point3 = Vec3; // 3D point
-pub type Color = Vec3; // RGB color
+pub type Point3D = Vec3D; // 3D point
+pub type Color = Vec3D; // RGB color
 
 #[derive(Debug, Clone, Copy)]
-pub struct Vec3 {
+pub struct Vec3D {
     pub x: f64,
     pub y: f64,
     pub z: f64,
 }
 
-impl Vec3 {
+impl Vec3D {
     pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Vec3 { x, y, z }
+        Vec3D { x, y, z }
     }
 
     pub fn length_squared(self) -> f64 {
@@ -37,8 +37,8 @@ impl Vec3 {
         }
     }
 
-    pub fn unit_vector(self) -> Self {
-        self / self.length()
+    pub fn unit_vector(v: Vec3D) -> Self {
+        v / v.length()
     }
 
     // void write_color(std::ostream &out, color pixel_color) {
@@ -57,7 +57,7 @@ impl Vec3 {
     }
 }
 
-impl Add for Vec3 {
+impl Add for Vec3D {
     type Output = Self;
     fn add(self, other: Self) -> Self::Output {
         Self {
@@ -68,7 +68,7 @@ impl Add for Vec3 {
     }
 }
 
-impl AddAssign for Vec3 {
+impl AddAssign for Vec3D {
     fn add_assign(&mut self, other: Self) {
         *self = Self {
             x: self.x + other.x,
@@ -78,7 +78,7 @@ impl AddAssign for Vec3 {
     }
 }
 
-impl Sub for Vec3 {
+impl Sub for Vec3D {
     type Output = Self;
     fn sub(self, other: Self) -> Self::Output {
         Self {
@@ -92,7 +92,7 @@ impl Sub for Vec3 {
 // inline vec3 operator*(const vec3 &u, const vec3 &v) {
 //     return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
 // }
-impl Mul for Vec3 {
+impl Mul for Vec3D {
     type Output = Self;
     fn mul(self, other: Self) -> Self::Output {
         Self {
@@ -106,7 +106,7 @@ impl Mul for Vec3 {
 // inline vec3 operator*(double t, const vec3 &v) {
 //     return vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
 // }
-impl Mul<f64> for Vec3 {
+impl Mul<f64> for Vec3D {
     type Output = Self;
     fn mul(self, other: f64) -> Self::Output {
         Self {
@@ -123,7 +123,7 @@ impl Mul<f64> for Vec3 {
 //     return t * v;
 // }
 
-impl MulAssign<f64> for Vec3 {
+impl MulAssign<f64> for Vec3D {
     fn mul_assign(&mut self, t: f64) {
         *self = Self {
             x: self.x * t,
@@ -133,7 +133,7 @@ impl MulAssign<f64> for Vec3 {
     }
 }
 
-impl Neg for Vec3 {
+impl Neg for Vec3D {
     type Output = Self;
     fn neg(self) -> Self::Output {
         Self {
@@ -144,7 +144,7 @@ impl Neg for Vec3 {
     }
 }
 
-impl Div<f64> for Vec3 {
+impl Div<f64> for Vec3D {
     type Output = Self;
     fn div(self, rhs: f64) -> Self::Output {
         Self {
@@ -155,7 +155,7 @@ impl Div<f64> for Vec3 {
     }
 }
 
-impl Div for Vec3 {
+impl Div for Vec3D {
     type Output = Self;
     fn div(self, rhs: Self) -> Self::Output {
         Self {
@@ -168,7 +168,7 @@ impl Div for Vec3 {
 
 // inline vec3 operator/(vec3 v, double t) {
 //     return (1/t) * v;
-impl DivAssign<f64> for Vec3 {
+impl DivAssign<f64> for Vec3D {
     fn div_assign(&mut self, rhs: f64) {
         *self = Self {
             x: self.x / rhs,
