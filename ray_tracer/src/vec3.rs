@@ -3,7 +3,7 @@ use std::process::Output;
 
 // Type aliases for Vec3
 type point3 = Vec3; // 3D point
-type color = Vec3; // RGB color
+pub type Color = Vec3; // RGB color
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
@@ -39,6 +39,21 @@ impl Vec3 {
 
     pub fn unit_vector(self) -> Self {
         self / self.length()
+    }
+
+    // void write_color(std::ostream &out, color pixel_color) {
+    //     // Write the translated [0,255] value of each color component.
+    //     out << static_cast<int>(255.999 * pixel_color.x()) << ' '
+    //         << static_cast<int>(255.999 * pixel_color.y()) << ' '
+    //         << static_cast<int>(255.999 * pixel_color.z()) << '\n';
+    // }
+    pub fn write_color(self) {
+        println!(
+            "{} {} {}",
+            (255.999 * self.x) as i32,
+            (255.999 * self.y) as i32,
+            (255.999 * self.z) as i32
+        )
     }
 }
 
