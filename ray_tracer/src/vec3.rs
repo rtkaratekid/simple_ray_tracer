@@ -1,5 +1,4 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub};
-// use std::process::Output;
 
 // Type aliases for Vec3
 pub type Point3D = Vec3D; // 3D point
@@ -105,13 +104,6 @@ impl Mul<f64> for Vec3D {
     }
 }
 
-// TODO: Do I need this? Oh no I don't because it just calls the above Mul implementation.
-// I think rust is smart enough to not have a rhs and lhs required
-// follow up, it's nnot that smart
-// inline vec3 operator*(const vec3 &v, double t) {
-//     return t * v;
-// }
-
 impl Mul<Vec3D> for f64 {
     type Output = Vec3D;
     fn mul(self, other: Vec3D) -> Vec3D {
@@ -166,8 +158,6 @@ impl Div for Vec3D {
     }
 }
 
-// inline vec3 operator/(vec3 v, double t) {
-//     return (1/t) * v;
 impl DivAssign<f64> for Vec3D {
     fn div_assign(&mut self, rhs: f64) {
         *self = Self {
