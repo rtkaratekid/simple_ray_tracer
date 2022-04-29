@@ -13,7 +13,6 @@ fn main() {
     let height = (width as f64 / aspect_ratio) as i32;
 
     // Camera
-
     let viewport_height = 2.0;
     let viewport_width = aspect_ratio * viewport_height;
     let focal_length = 1.0;
@@ -28,13 +27,11 @@ fn main() {
 
     for j in (0..height).rev() {
         for i in 0..width {
-            let u = (i / (width-1)) as f64;
-            let v = (j / (height-1)) as f64;
+            let u = i as f64 / (width-1) as f64;// as f64;
+            let v = j as f64 / (height-1) as f64;
 
-            let ray = Ray::new(origin, lower_left_corner + horizontal * u + vertical * v - origin);
-            let pixel_color = ray_color(ray);
-
-            pixel_color.write_color();
+            let ray = Ray::new(origin, lower_left_corner + (horizontal * u) + (vertical * v) - origin);
+            ray_color(ray).write_color();
         }
     }
 }
