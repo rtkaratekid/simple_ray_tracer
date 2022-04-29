@@ -41,12 +41,6 @@ impl Vec3D {
         v / v.length()
     }
 
-    // void write_color(std::ostream &out, color pixel_color) {
-    //     // Write the translated [0,255] value of each color component.
-    //     out << static_cast<int>(255.999 * pixel_color.x()) << ' '
-    //         << static_cast<int>(255.999 * pixel_color.y()) << ' '
-    //         << static_cast<int>(255.999 * pixel_color.z()) << '\n';
-    // }
     pub fn write_color(self) {
         println!(
             "{} {} {}",
@@ -89,9 +83,6 @@ impl Sub for Vec3D {
     }
 }
 
-// inline vec3 operator*(const vec3 &u, const vec3 &v) {
-//     return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
-// }
 impl Mul for Vec3D {
     type Output = Self;
     fn mul(self, other: Self) -> Self::Output {
@@ -103,9 +94,6 @@ impl Mul for Vec3D {
     }
 }
 
-// inline vec3 operator*(double t, const vec3 &v) {
-//     return vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
-// }
 impl Mul<f64> for Vec3D {
     type Output = Self;
     fn mul(self, other: f64) -> Self::Output {
@@ -119,9 +107,21 @@ impl Mul<f64> for Vec3D {
 
 // TODO: Do I need this? Oh no I don't because it just calls the above Mul implementation.
 // I think rust is smart enough to not have a rhs and lhs required
+// follow up, it's nnot that smart
 // inline vec3 operator*(const vec3 &v, double t) {
 //     return t * v;
 // }
+
+impl Mul<Vec3D> for f64 {
+    type Output = Vec3D;
+    fn mul(self, other: Vec3D) -> Vec3D {
+        Vec3D {
+            x: self * other.x,
+            y: self * other.y,
+            z: self * other.z,
+        }
+    }
+}
 
 impl MulAssign<f64> for Vec3D {
     fn mul_assign(&mut self, t: f64) {

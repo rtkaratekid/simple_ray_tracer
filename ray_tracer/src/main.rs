@@ -27,7 +27,7 @@ fn main() {
 
     for j in (0..height).rev() {
         for i in 0..width {
-            let u = i as f64 / (width-1) as f64;// as f64;
+            let u = i as f64 / (width-1) as f64;
             let v = j as f64 / (height-1) as f64;
 
             let ray = Ray::new(origin, lower_left_corner + (horizontal * u) + (vertical * v) - origin);
