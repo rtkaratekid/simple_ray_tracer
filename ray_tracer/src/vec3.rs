@@ -1,5 +1,7 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub};
 
+use crate::camera::clamp;
+
 // Type aliases for Vec3
 pub type Point3D = Vec3D; // 3D point
 pub type Color = Vec3D; // RGB color
@@ -40,12 +42,20 @@ impl Vec3D {
         v / v.length()
     }
 
-    pub fn write_color(self) {
+    pub fn write_color(self, samples_per_pixel: i32) {
+
+        // Divide the color by the number of samples.
+        let scale = 1.0 / samples_per_pixel as f64;
+
+        let r = self.x * scale;
+        let g = self.y * scale;
+        let b = self.z * scale;
+
         println!(
             "{} {} {}",
-            (255.999 * self.x) as i32,
-            (255.999 * self.y) as i32,
-            (255.999 * self.z) as i32
+            (255.999 * clamp(r, 0.0, 0.999)) as i32,
+            (255.999 * clamp(g, 0.0, 0.999)) as i32,
+            (255.999 * clamp(b, 0.0, 0.999)) as i32
         )
     }
 }
