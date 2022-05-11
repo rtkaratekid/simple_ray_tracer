@@ -1,19 +1,14 @@
 use crate::{
+    ray::{HitRecord, Hittable, Ray},
     vec3::Point3D,
-    ray::{
-        Hittable,
-        HitRecord,
-        Ray,
-    }
 };
-
 
 #[derive(Clone)]
 pub struct HittableList<'a> {
     pub objects: Vec<&'a dyn Hittable>,
 }
 
-impl<'a> Hittable for HittableList <'a> {
+impl<'a> Hittable for HittableList<'a> {
     fn hit(&self, r: &Ray, t_min: f64, t_max: f64, mut rec: &mut HitRecord) -> bool {
         let mut temp_rec = HitRecord::new();
         let mut hit_anything = false;
@@ -31,7 +26,4 @@ impl<'a> Hittable for HittableList <'a> {
     }
 }
 
-impl<'a> HittableList<'a> {
-
-
-}
+impl<'a> HittableList<'a> {}

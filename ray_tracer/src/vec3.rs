@@ -42,8 +42,11 @@ impl Vec3D {
         v / v.length()
     }
 
-    pub fn write_color(self, samples_per_pixel: i32) {
+    pub fn random_unit_vector() -> Vec3D {
+        Self::unit_vector(random_in_unit_sphere())
+    }
 
+    pub fn write_color(self, samples_per_pixel: i32) {
         // Divide the color by the number of samples.
         let scale = 1.0 / samples_per_pixel as f64;
 
@@ -60,20 +63,44 @@ impl Vec3D {
         )
     }
 
-   pub fn random() -> Vec3D {
+    pub fn random() -> Vec3D {
         Vec3D::new(random_double(), random_double(), random_double())
     }
 
     pub fn bounded_random(min: f64, max: f64) -> Vec3D {
-        Vec3D::new(range_random_double(min, max), range_random_double(min, max), range_random_double(min, max))
+        Vec3D::new(
+            range_random_double(min, max),
+            range_random_double(min, max),
+            range_random_double(min, max),
+        )
     }
 
+    pub fn near_zero(&self) -> bool {
+        // Return true if the vector is close to zero in all dimensions.
+        let s = 1e-8;
+        self.x.abs() < s && self.y.abs() < s && self.z.abs() < s
+    }
+
+    pub fn random_in_hemisphere(normal: &Vec3D) -> Vec3D {
+        let in_unit_sphere = random_in_unit_sphere();
+        if in_unit_sphere.dot(*normal) > 0.0 {
+            // In the same hemisphere as the normal
+            return in_unit_sphere;
+        }
+        -in_unit_sphere
+    }
+}
+
+pub fn reflect(v: &Vec3D, n: &Vec3D) -> Vec3D {
+    *v - (*n * 2 as f64 * v.dot(*n))
 }
 
 pub fn random_in_unit_sphere() -> Vec3D {
     loop {
         let p = Vec3D::bounded_random(-1.0, 1.0);
-        if p.length_squared() >= 1.0 { continue; }
+        if p.length_squared() >= 1.0 {
+            continue;
+        }
         return p;
     }
 }
