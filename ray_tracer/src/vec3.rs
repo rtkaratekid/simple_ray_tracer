@@ -1,6 +1,6 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub};
 
-use crate::camera::clamp;
+use crate::camera::{clamp, random_double, range_random_double};
 
 // Type aliases for Vec3
 pub type Point3D = Vec3D; // 3D point
@@ -57,6 +57,23 @@ impl Vec3D {
             (255.999 * clamp(g, 0.0, 0.999)) as i32,
             (255.999 * clamp(b, 0.0, 0.999)) as i32
         )
+    }
+
+   pub fn random() -> Vec3D {
+        Vec3D::new(random_double(), random_double(), random_double())
+    }
+
+    pub fn bounded_random(min: f64, max: f64) -> Vec3D {
+        Vec3D::new(range_random_double(min, max), range_random_double(min, max), range_random_double(min, max))
+    }
+
+}
+
+pub fn random_in_unit_sphere() -> Vec3D {
+    loop {
+        let p = Vec3D::bounded_random(-1.0, 1.0);
+        if p.length_squared() >= 1.0 { continue; }
+        return p;
     }
 }
 

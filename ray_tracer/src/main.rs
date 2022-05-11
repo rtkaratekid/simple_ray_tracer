@@ -1,9 +1,12 @@
 use ray_tracer::{
     ray::{Ray, HitRecord, Hittable},
-    vec3::{Color, Point3D, Vec3D}, hittable_list::HittableList, sphere::Sphere, camera::{Camera, random_double},
+    vec3::{Color, Point3D, Vec3D, random_in_unit_sphere},
+    hittable_list::HittableList,
+    sphere::Sphere,
+    camera::{Camera, random_double},
 };
 
-static infinity: f64 = f64::INFINITY;
+static INFINITY: f64 = f64::INFINITY;
 static PI: f64 = 3.1415926535897932385;
 
 
@@ -27,10 +30,15 @@ fn hit_sphere(center: Point3D, radius: f64, r: &Ray) -> f64 {
     }
 }
 
-fn ray_color(r: Ray, world: &dyn Hittable) -> Color {
+fn ray_color(r: Ray, world: &dyn Hittable, depth: i32) -> Color {
+
+     // If we've exceeded the ray bounce limit, no more light is gathered.
+     if depth <= 0 { return Color::new(0.0,0.0,0.0); }
+     
     let mut rec = HitRecord::new();
-    if world.hit(&r, 0.0, infinity, &mut rec) {
-        return 0.5 * (rec.normal + Color::new(1.0,1.0,1.0));
+    if world.hit(&r, 0.0, INFINITY, &mut rec) {
+        let target = rec.p + rec.normal + random_in_unit_sphere();
+        return 0.5 * ray_color(Ray::new(rec.p, target - rec.p), world, depth-1);
     }
 
     let unit_direction = Color::unit_vector(r.direction);
@@ -45,6 +53,7 @@ fn main() {
     let width = 400;
     let height = (width as f64 / aspect_ratio) as i32;
     let samples_per_pixel = 100;
+    let max_depth = 50;
 
     let mut world = HittableList{objects: Vec::new()};
 
@@ -68,7 +77,7 @@ fn main() {
                     let u = (i as f64 + random_double()) / (width-1) as f64;
                     let v = (j as f64 + random_double()) / (height-1) as f64;
                     let r = cam.get_ray(u, v);
-                    c += ray_color(r, &world);
+                    c += ray_color(r, &world, max_depth);
                 }
 
             c.write_color(samples_per_pixel);
