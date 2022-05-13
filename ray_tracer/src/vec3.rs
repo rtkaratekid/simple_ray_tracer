@@ -38,12 +38,12 @@ impl Vec3D {
         }
     }
 
-    pub fn unit_vector(v: Vec3D) -> Self {
-        v / v.length()
+    pub fn unit_vector(&self) -> Self {
+        *self / self.length()
     }
 
     pub fn random_unit_vector() -> Vec3D {
-        Self::unit_vector(random_in_unit_sphere())
+        random_in_unit_sphere().unit_vector()
     }
 
     pub fn write_color(self, samples_per_pixel: i32) {
@@ -81,9 +81,9 @@ impl Vec3D {
         self.x.abs() < s && self.y.abs() < s && self.z.abs() < s
     }
 
-    pub fn random_in_hemisphere(normal: &Vec3D) -> Vec3D {
+    pub fn random_in_hemisphere(&self) -> Vec3D {
         let in_unit_sphere = random_in_unit_sphere();
-        if in_unit_sphere.dot(*normal) > 0.0 {
+        if in_unit_sphere.dot(*self) > 0.0 {
             // In the same hemisphere as the normal
             return in_unit_sphere;
         }

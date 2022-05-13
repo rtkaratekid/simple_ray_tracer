@@ -1,5 +1,5 @@
 use crate::{
-    material::{ Material },
+    material::Material,
     ray::{HitRecord, Hittable, Ray},
     vec3::Point3D,
 };

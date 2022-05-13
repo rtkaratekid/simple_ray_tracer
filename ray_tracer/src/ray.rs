@@ -1,6 +1,6 @@
 use crate::{
-    material::{Material, Lambertian},
-    vec3::{Point3D, Vec3D, Color},
+    material::{Lambertian, Material},
+    vec3::{Color, Point3D, Vec3D},
 };
 
 #[derive(Debug, Copy, Clone)]
@@ -39,7 +39,7 @@ impl HitRecord {
             },
             t: 0.0,
             front_face: false,
-            material: Material::Lambertian(Lambertian::new(&Color::new(0.0, 0.0, 0.0))),
+            material: Material::Lambertian(Lambertian::new(Color::new(0.0, 0.0, 0.0))),
         }
     }
 
