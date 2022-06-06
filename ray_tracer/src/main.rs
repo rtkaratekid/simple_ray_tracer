@@ -1,10 +1,10 @@
 use ray_tracer::{
     camera::{random_double, Camera},
     hittable_list::HittableList,
-    material::{Lambertian, Metal, Material, Scatterable},
+    material::{Lambertian, Material, Metal},
     ray::{HitRecord, Hittable, Ray},
     sphere::Sphere,
-    vec3::{ Color, Point3D, Vec3D},
+    vec3::{Color, Point3D},
 };
 
 static INFINITY: f64 = f64::INFINITY;
@@ -12,21 +12,6 @@ static INFINITY: f64 = f64::INFINITY;
 
 // fn degrees_to_radians(degrees: f64) -> f64 {
 //     return degrees * PI / 180.0;
-// }
-
-// fn hit_sphere(center: Point3D, radius: f64, r: &Ray) -> f64 {
-//     let oc = r.origin - center;
-
-//     let a = r.direction.length_squared();
-//     let half_b = r.direction.dot(oc);
-//     let c = oc.length_squared() - radius * radius;
-//     let discriminant = half_b * half_b - a * c;
-
-//     if discriminant < 0.0 {
-//         return -1.0;
-//     } else {
-//         return (-half_b - discriminant.sqrt()) / a;
-//     }
 // }
 
 fn ray_color(r: Ray, world: &dyn Hittable, depth: i32) -> Color {
@@ -37,17 +22,11 @@ fn ray_color(r: Ray, world: &dyn Hittable, depth: i32) -> Color {
 
     let mut rec = HitRecord::new();
     if world.hit(&r, 0.001, INFINITY, &mut rec) {
-        let scattered: Ray = Ray::new(Vec3D::new(0.0, 0.0, 0.0), Vec3D::new(0.0, 0.0, 0.0));
-        let attenuation: Color = Color::new(0.0, 0.0, 0.0);
-        if rec.material.scatter(&r, &rec, attenuation, scattered) {
+        if let Some((attenuation, scattered)) = rec.scatter(&r) {
             return attenuation * ray_color(scattered, world, depth - 1);
+        } else {
+            return Color::new(0.0, 0.0, 0.0);
         }
-        return Color::new(0.0, 0.0, 0.0);
-
-        // let target = rec.p + rec.normal.random_in_hemisphere();
-        // let target = rec.p + rec.normal + random_unit_vector();
-        // let target = rec.p + rec.normal + random_in_unit_sphere();
-        // return 0.5 * ray_color(Ray::new(rec.p, target - rec.p), world, depth - 1);
     }
 
     let unit_direction = Color::unit_vector(&r.direction);
@@ -69,19 +48,11 @@ fn main() {
         objects: Vec::new(),
     };
 
-    // auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    // auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
-    // auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8));
-    // auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2));
-
-
     let ground_material = Material::Lambertian(Lambertian::new(Color::new(0.8, 0.8, 0.0)));
     let center_material = Material::Lambertian(Lambertian::new(Color::new(0.7, 0.3, 0.3)));
     let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8)));
     let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2)));
 
-
-    // world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     let left_sphere = Sphere {
         center: Point3D::new(-1.0, 0.0, -1.0),
         radius: 0.5,
@@ -89,7 +60,6 @@ fn main() {
     };
     world.objects.push(&left_sphere);
 
-    // world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
     let center_sphere = Sphere {
         center: Point3D::new(0.0, 0.0, -1.0),
         radius: 0.5,
@@ -97,7 +67,6 @@ fn main() {
     };
     world.objects.push(&center_sphere);
 
-    // world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
     let right_sphere = Sphere {
         center: Point3D::new(1.0, 0.0, -1.0),
         radius: 0.5,
@@ -105,7 +74,6 @@ fn main() {
     };
     world.objects.push(&right_sphere);
 
-    // world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     let ground = Sphere {
         center: Point3D::new(0.0, -100.5, -1.0),
         radius: 100.0,

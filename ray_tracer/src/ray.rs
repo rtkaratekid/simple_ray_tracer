@@ -1,5 +1,5 @@
 use crate::{
-    material::{Lambertian, Material},
+    material::{Lambertian, Material, Scatterable},
     vec3::{Color, Point3D, Vec3D},
 };
 
@@ -50,6 +50,10 @@ impl HitRecord {
         } else {
             -*outward_normal
         };
+    }
+
+    pub fn scatter(&self, r_in: &Ray) -> Option<(Color, Ray)> {
+        self.material.scatter(r_in, self)
     }
 }
 

@@ -6,7 +6,7 @@ use crate::camera::{clamp, random_double, range_random_double};
 pub type Point3D = Vec3D; // 3D point
 pub type Color = Vec3D; // RGB color
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct Vec3D {
     pub x: f64,
     pub y: f64,

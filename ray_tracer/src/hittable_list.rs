@@ -1,6 +1,5 @@
 use crate::{
     ray::{HitRecord, Hittable, Ray},
-    vec3::Point3D,
 };
 
 #[derive(Clone)]
@@ -9,7 +8,7 @@ pub struct HittableList<'a> {
 }
 
 impl<'a> Hittable for HittableList<'a> {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64, mut rec: &mut HitRecord) -> bool {
+    fn hit(&self, r: &Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         let mut temp_rec = HitRecord::new();
         let mut hit_anything = false;
         let mut closest_so_far = t_max;
