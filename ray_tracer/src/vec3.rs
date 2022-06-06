@@ -91,6 +91,13 @@ impl Vec3D {
     }
 }
 
+pub fn refract(v: &Vec3D, n: &Vec3D, etai_over_etat: f64) -> Vec3D {
+    let cos_theta = ((-*v).dot(*n)).min(1.0);
+    let r_out_perp = (*v + *n * cos_theta) * etai_over_etat;
+    let r_out_parallel = *n * (-1.0 * (1.0 - r_out_perp.length_squared()).abs().sqrt());
+    r_out_perp + r_out_parallel    
+}
+
 pub fn reflect(v: &Vec3D, n: &Vec3D) -> Vec3D {
     *v - (*n * 2 as f64 * v.dot(*n))
 }

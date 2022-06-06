@@ -1,6 +1,4 @@
-use crate::{
-    ray::{HitRecord, Hittable, Ray},
-};
+use crate::ray::{HitRecord, Hittable, Ray};
 
 #[derive(Clone)]
 pub struct HittableList<'a> {

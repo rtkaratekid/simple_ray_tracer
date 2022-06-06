@@ -1,7 +1,7 @@
 use ray_tracer::{
     camera::{random_double, Camera},
     hittable_list::HittableList,
-    material::{Lambertian, Material, Metal},
+    material::{Lambertian, Material, Metal, Glass},
     ray::{HitRecord, Hittable, Ray},
     sphere::Sphere,
     vec3::{Color, Point3D},
@@ -49,8 +49,10 @@ fn main() {
     };
 
     let ground_material = Material::Lambertian(Lambertian::new(Color::new(0.8, 0.8, 0.0)));
-    let center_material = Material::Lambertian(Lambertian::new(Color::new(0.7, 0.3, 0.3)));
-    let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8), 0.3));
+    // let center_material = Material::Lambertian(Lambertian::new(Color::new(0.7, 0.3, 0.3)));
+    let center_material = Material::Glass(Glass::new(1.5));
+    let left_material = Material::Glass(Glass::new(1.5));
+    // let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8), 0.3));
     let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2), 1.0));
 
     let left_sphere = Sphere {
