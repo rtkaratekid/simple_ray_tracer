@@ -50,8 +50,8 @@ fn main() {
 
     let ground_material = Material::Lambertian(Lambertian::new(Color::new(0.8, 0.8, 0.0)));
     let center_material = Material::Lambertian(Lambertian::new(Color::new(0.7, 0.3, 0.3)));
-    let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8)));
-    let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2)));
+    let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8), 0.3));
+    let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2), 1.0));
 
     let left_sphere = Sphere {
         center: Point3D::new(-1.0, 0.0, -1.0),
