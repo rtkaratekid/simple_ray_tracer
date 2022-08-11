@@ -52,6 +52,7 @@ fn main() {
     // let center_material = Material::Lambertian(Lambertian::new(Color::new(0.7, 0.3, 0.3)));
     let center_material = Material::Glass(Glass::new(1.5));
     let left_material = Material::Glass(Glass::new(1.5));
+    // let center_material = Material::Metal(Metal::new(Color::new(0.9, 0.8, 0.8), 0.3));
     // let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8), 0.3));
     let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2), 1.0));
 

@@ -6,7 +6,7 @@ use crate::camera::{clamp, random_double, range_random_double};
 pub type Point3D = Vec3D; // 3D point
 pub type Color = Vec3D; // RGB color
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vec3D {
     pub x: f64,
     pub y: f64,
@@ -26,9 +26,13 @@ impl Vec3D {
         self.length_squared().sqrt()
     }
 
-    pub fn dot(self, rhs: Self) -> f64 {
-        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
+    pub fn dot(&self, other: &Point3D) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z
     }
+
+    // pub fn dot(self, rhs: Self) -> f64 {
+    //     self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
+    // }
 
     pub fn cross(self, rhs: Self) -> Self {
         Self {
@@ -83,7 +87,7 @@ impl Vec3D {
 
     pub fn random_in_hemisphere(&self) -> Vec3D {
         let in_unit_sphere = random_in_unit_sphere();
-        if in_unit_sphere.dot(*self) > 0.0 {
+        if in_unit_sphere.dot(self) > 0.0 {
             // In the same hemisphere as the normal
             return in_unit_sphere;
         }
@@ -91,15 +95,15 @@ impl Vec3D {
     }
 }
 
-pub fn refract(v: &Vec3D, n: &Vec3D, etai_over_etat: f64) -> Vec3D {
-    let cos_theta = ((-*v).dot(*n)).min(1.0);
-    let r_out_perp = (*v + *n * cos_theta) * etai_over_etat;
-    let r_out_parallel = *n * (-1.0 * (1.0 - r_out_perp.length_squared()).abs().sqrt());
-    r_out_perp + r_out_parallel    
-}
+// pub fn refract(v: &Vec3D, n: &Vec3D, etai_over_etat: f64) -> Vec3D {
+//     let cos_theta = ((-*v).dot(*n)).min(1.0);
+//     let r_out_perp = (*v + (*n * cos_theta)) * etai_over_etat;
+//     let r_out_parallel = *n * (-1.0 * (1.0 - r_out_perp.length_squared()).abs().sqrt());
+//     r_out_perp + r_out_parallel    
+// }
 
 pub fn reflect(v: &Vec3D, n: &Vec3D) -> Vec3D {
-    *v - (*n * 2 as f64 * v.dot(*n))
+    *v - (*n * 2 as f64 * v.dot(n))
 }
 
 pub fn random_in_unit_sphere() -> Vec3D {
