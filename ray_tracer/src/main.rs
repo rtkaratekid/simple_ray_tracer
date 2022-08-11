@@ -1,18 +1,14 @@
 use ray_tracer::{
     camera::{random_double, Camera},
     hittable_list::HittableList,
-    material::{Lambertian, Material, Metal, Glass},
+    material::{Glass, Lambertian, Material, Metal},
     ray::{HitRecord, Hittable, Ray},
     sphere::Sphere,
-    vec3::{Color, Point3D},
+    vec3::{Color, Point3D, Vec3D},
 };
 
 static INFINITY: f64 = f64::INFINITY;
-// static PI: f64 = 3.1415926535897932385;
-
-// fn degrees_to_radians(degrees: f64) -> f64 {
-//     return degrees * PI / 180.0;
-// }
+static PI: f64 = 3.1415926535897932385;
 
 fn ray_color(r: Ray, world: &dyn Hittable, depth: i32) -> Color {
     // If we've exceeded the ray bounce limit, no more light is gathered.
@@ -48,17 +44,21 @@ fn main() {
         objects: Vec::new(),
     };
 
-    let ground_material = Material::Lambertian(Lambertian::new(Color::new(0.8, 0.8, 0.0)));
-    // let center_material = Material::Lambertian(Lambertian::new(Color::new(0.7, 0.3, 0.3)));
-    let center_material = Material::Glass(Glass::new(1.5));
-    let left_material = Material::Glass(Glass::new(1.5));
-    // let center_material = Material::Metal(Metal::new(Color::new(0.9, 0.8, 0.8), 0.3));
-    // let left_material = Material::Metal(Metal::new(Color::new(0.8, 0.8, 0.8), 0.3));
-    let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2), 1.0));
+    let R = (PI / 4.0).cos();
 
+    // Materials
+    let ground_material = Material::Lambertian(Lambertian::new(Color::new(0.8, 0.8, 0.0)));
+
+    let center_material = Material::Lambertian(Lambertian::new(Color::new(0.1, 0.2, 0.5)));
+    let right_material = Material::Metal(Metal::new(Color::new(0.8, 0.6, 0.2), 0.0));
+    // let left_material = Material::Lambertian(Lambertian::new(Color::new(0.0, 0.0, 1.0)));
+    // let right_material = Material::Lambertian(Lambertian::new(Color::new(1.0, 0.0, 0.0)));
+    let left_material = Material::Glass(Glass::new(1.5));
+
+    // create objects
     let left_sphere = Sphere {
         center: Point3D::new(-1.0, 0.0, -1.0),
-        radius: 0.5,
+        radius: R,
         material: left_material,
     };
     world.objects.push(&left_sphere);
@@ -72,7 +72,7 @@ fn main() {
 
     let right_sphere = Sphere {
         center: Point3D::new(1.0, 0.0, -1.0),
-        radius: 0.5,
+        radius: R,
         material: right_material,
     };
     world.objects.push(&right_sphere);
@@ -85,7 +85,12 @@ fn main() {
     world.objects.push(&ground);
 
     // Camera
-    let cam = Camera::new();
+    let cam = Camera::new(
+        Point3D::new(-2.0,2.0,1.0),
+        Point3D::new(0.0,0.0,1.0),
+        Vec3D::new(0.0, 1.0, 0.0),
+        90.0,
+        aspect_ratio);
 
     // Render
     println!("P3\n{} {}\n255", width, height);

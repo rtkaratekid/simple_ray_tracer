@@ -2,7 +2,7 @@ use rand::Rng;
 
 use crate::{
     ray::{HitRecord, Ray},
-    vec3::{random_in_unit_sphere, reflect, Color, Vec3D, Point3D},
+    vec3::{random_in_unit_sphere, reflect, Color, Point3D, Vec3D},
 };
 
 pub trait Scatterable {
